@@ -84,8 +84,8 @@ class DAO():
             cursor.execute(query, (anno, brand, retailer))
 
             for row in cursor:
-                res.append(f"Data: {row["data"]}; Ricavo: {row["ricavo"]}; Retailer: {row["rCode"]}; Product: {row["pNumber"]}")
-                #res.append(row["data"], row["ricavo"], row["rCode"], row["pNumber"])
+                #res.append(f"Data: {row["data"]}; Ricavo: {row["ricavo"]}; Retailer: {row["rCode"]}; Product: {row["pNumber"]}")
+                res.append((row["data"], row["ricavo"], row["rCode"], row["pNumber"]))
 
             cursor.close()
             cnx.close()

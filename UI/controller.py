@@ -49,8 +49,8 @@ class Controller:
             self._view.update_page()
             return
         for v in topVendite:
-            self._view.txt_result.controls.append(ft.Text(v))
-            #self._view.txt_result.controls.append(ft.Text(f"Data: {v[0]}; Ricavo: {v[1]}; Retailer: {v[2]}; Product: {v[3]}"))
+            #self._view.txt_result.controls.append(ft.Text(v))
+            self._view.txt_result.controls.append(ft.Text(f"Data: {v[0]}; Ricavo: {v[1]}; Retailer: {v[2]}; Product: {v[3]}"))
         self._view.update_page()
         return
 
