@@ -77,7 +77,7 @@ class DAO():
             cursor = cnx.cursor(dictionary=True)
             query = """select gds.Date as data, (gds.Quantity * gds.Unit_sale_price) as ricavo, gds.Retailer_code as rCode, gds.Product_number as pNumber
                         from go_daily_sales gds, go_products gp 
-                        where gds.Product_number = gp.Product_number and year(gds.Date)=coalesce(%s, Date) and gp.Product_brand=coalesce(%s, Product_brand) and gds.Retailer_code=coalesce(%s, Retailer_code)
+                        where gds.Product_number = gp.Product_number and year(gds.Date)=coalesce(%s, year(gds.Date)) and gp.Product_brand=coalesce(%s, Product_brand) and gds.Retailer_code=coalesce(%s, Retailer_code)
                         order by (gds.Quantity * gds.Unit_sale_price) desc
                         limit 5"""
 
@@ -85,6 +85,7 @@ class DAO():
 
             for row in cursor:
                 res.append(f"Data: {row["data"]}; Ricavo: {row["ricavo"]}; Retailer: {row["rCode"]}; Product: {row["pNumber"]}")
+                #res.append(row["data"], row["ricavo"], row["rCode"], row["pNumber"])
 
             cursor.close()
             cnx.close()

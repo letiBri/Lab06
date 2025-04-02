@@ -26,20 +26,20 @@ class Controller:
     def read_retailer(self, e):
         self._ddRetailerValue = e.control.data
 
-    def handleTopVendite(self, e): #finire questo metodo
+    def handleTopVendite(self, e):
         self._view.txt_result.controls.clear()
         anno = self._view.ddAnno.value
-        if anno == "" or anno == "Nessun filtro":
-            anno = "null"
+        if anno is None or anno == "Nessun filtro":
+            anno = None
         else:
             anno = int(anno)
         brand = self._view.ddBrand.value
         if brand == "" or brand == "Nessun filtro":
-            brand = "null"
+            brand = None
         if self._view.ddRetailer.value == "Nessun filtro":
-            retailer = "null"
+            retailer = None
         elif self._ddRetailerValue is None:
-            retailer = "null"
+            retailer = None
         else:
             retailer = self._ddRetailerValue.Retailer_code
 
@@ -50,6 +50,7 @@ class Controller:
             return
         for v in topVendite:
             self._view.txt_result.controls.append(ft.Text(v))
+            #self._view.txt_result.controls.append(ft.Text(f"Data: {v[0]}; Ricavo: {v[1]}; Retailer: {v[2]}; Product: {v[3]}"))
         self._view.update_page()
         return
 
