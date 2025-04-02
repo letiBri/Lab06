@@ -4,14 +4,55 @@ import flet as ft
 class Controller:
     def __init__(self, view, model):
         # the view, with the graphical elements of the UI
+        self._ddRetailerValue = None
         self._view = view
         # the model, which implements the logic of the program and holds the data
         self._model = model
 
-    def handle_hello(self, e):
-        name = self._view.txt_name.value
-        if name is None or name == "":
-            self._view.create_alert("Inserire il nome")
-            return
-        self._view.txt_result.controls.append(ft.Text(f"Hello, {name}!"))
+    def fillddAnno(self):
+        for a in self._model.getAnni():
+            self._view.ddAnno.options.append(ft.dropdown.Option(a))
         self._view.update_page()
+
+    def fillddBrand(self):
+        for b in self._model.getBrand():
+            self._view.ddBrand.options.append(ft.dropdown.Option(b))
+        self._view.update_page()
+
+    def fillddRetailer(self):
+        for r in self._model.getRetailers():
+            self._view.ddRetailer.options.append(ft.dropdown.Option(key=r.Retailer_code, text=r.Retailer_name, data=r, on_click=self.read_retailer))
+
+    def read_retailer(self, e):
+        self._ddRetailerValue = e.control.data
+
+    def handleTopVendite(self, e): #finire questo metodo
+        self._view.txt_result.controls.clear()
+        anno = self._view.ddAnno.value
+        if anno == "" or anno == "Nessun filtro":
+            anno = "null"
+        else:
+            anno = int(anno)
+        brand = self._view.ddBrand.value
+        if brand == "" or brand == "Nessun filtro":
+            brand = "null"
+        if self._view.ddRetailer.value == "Nessun filtro":
+            retailer = "null"
+        elif self._ddRetailerValue is None:
+            retailer = "null"
+        else:
+            retailer = self._ddRetailerValue.Retailer_code
+
+        topVendite = self._model.getTopVendite(anno, brand, retailer)
+        if len(topVendite) == 0:
+            self._view.txt_result.controls.append(ft.Text("nessuna vendita con questi filtri"))
+            self._view.update_page()
+            return
+        for v in topVendite:
+            self._view.txt_result.controls.append(ft.Text(v))
+        self._view.update_page()
+        return
+
+
+    def handleAnalizzaVendite(self, e): #finire punto 3
+        pass
