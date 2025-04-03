@@ -22,3 +22,6 @@ class Model:
 
     def getTopVendite(self, anno, brand, retailer):
         return DAO.getTopVendite(anno, brand, retailer)
+
+    def getAnalizzaVendite(self, anno, brand, retailer):
+        return DAO.getAnalizzaVendite(anno, brand, retailer)

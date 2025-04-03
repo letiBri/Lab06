@@ -91,3 +91,26 @@ class DAO():
             cnx.close()
             return res
 
+    @staticmethod
+    def getAnalizzaVendite(anno, brand, retailer):
+        cnx = DBConnect.get_connection()
+        res = []
+        if cnx is None:
+            return res
+        else:
+            cursor = cnx.cursor(dictionary=True)
+            query = """select sum(gds.Quantity * gds.Unit_sale_price) as ricavoTot, 
+                            count(*) as nVendite, count(distinct gds.Retailer_code) as nRetailer, 
+                            count(distinct gp.Product_number) as nProdotti
+                        from go_daily_sales gds, go_products gp 
+                        where gds.Product_number = gp.Product_number and year(gds.Date)=coalesce(%s, year(gds.Date)) and gp.Product_brand=coalesce(%s, gp.Product_brand) and gds.Retailer_code=coalesce(%s, gds.Retailer_code)"""
+
+            cursor.execute(query, (anno, brand, retailer))
+
+            for row in cursor:
+                res.append((row["ricavoTot"], row["nVendite"], row["nRetailer"], row["nProdotti"]))
+
+            cursor.close()
+            cnx.close()
+            return res
+

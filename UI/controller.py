@@ -56,4 +56,32 @@ class Controller:
 
 
     def handleAnalizzaVendite(self, e): #finire punto 3
-        pass
+        self._view.txt_result.controls.clear()
+        anno = self._view.ddAnno.value
+        if anno is None or anno == "Nessun filtro":
+            anno = None
+        else:
+            anno = int(anno)
+        brand = self._view.ddBrand.value
+        if brand == "" or brand == "Nessun filtro":
+            brand = None
+        if self._view.ddRetailer.value == "Nessun filtro":
+            retailer = None
+        elif self._ddRetailerValue is None:
+            retailer = None
+        else:
+            retailer = self._ddRetailerValue.Retailer_code
+
+        analizzaVendite = self._model.getAnalizzaVendite(anno, brand, retailer)
+        if len(analizzaVendite) == 0:
+            self._view.txt_result.controls.append(ft.Text("nessuna statistica trovata"))
+            self._view.update_page()
+            return
+        self._view.txt_result.controls.append(ft.Text("Statistiche vendite:"))
+        for v in analizzaVendite:
+            self._view.txt_result.controls.append(ft.Text(f"Giro d'affari: {v[0]}"))
+            self._view.txt_result.controls.append(ft.Text(f"Numero vendite: {v[1]}"))
+            self._view.txt_result.controls.append(ft.Text(f"Numero retailers coinvolti: {v[2]}"))
+            self._view.txt_result.controls.append(ft.Text(f"Numero prodotti coinvolti: {v[3]}"))
+        self._view.update_page()
+        return
