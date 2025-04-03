@@ -44,6 +44,7 @@ class Controller:
             retailer = self._ddRetailerValue.Retailer_code
 
         topVendite = self._model.getTopVendite(anno, brand, retailer)
+        #print(topVendite)
         if len(topVendite) == 0:
             self._view.txt_result.controls.append(ft.Text("nessuna vendita con questi filtri"))
             self._view.update_page()
@@ -73,7 +74,8 @@ class Controller:
             retailer = self._ddRetailerValue.Retailer_code
 
         analizzaVendite = self._model.getAnalizzaVendite(anno, brand, retailer)
-        if len(analizzaVendite) == 0:
+        print(analizzaVendite)
+        if analizzaVendite[0][0] is None: #prendo nella lista il primo elemento (cioè una tupla) e prendo il primo elemento della tupla
             self._view.txt_result.controls.append(ft.Text("nessuna statistica trovata"))
             self._view.update_page()
             return
